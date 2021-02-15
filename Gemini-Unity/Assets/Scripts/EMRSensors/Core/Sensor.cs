@@ -17,11 +17,11 @@ namespace Gemini.EMRS.Core
 
         // Change this to the IP that the server are running on for you
 
-	// Localhost
-        public static string serverIP = "127.0.0.1";
+	    // Localhost
+        //public static string serverIP = "127.0.0.1";
 
         // VM IP
-        //public static string serverIP = "192.168.80.128";
+        public static string serverIP = "192.168.146.128";
 
         // Docker IP
         //public static string serverIP = "0.0.0.0";
