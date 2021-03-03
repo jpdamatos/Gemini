@@ -12,12 +12,18 @@ namespace Gemini.EMRS.ScenarioGenerator
         private GameObject _boatObject;
         private int _boatNumber;
         private string _scenarioPath;
+        private bool _useLLH;
+        private const float latitudeOffset = 63.435166667f;
+        private const float longitudeOffset = 10.3929167f;
+        private const float R_N = 6397309.16f;
+        private const float R_M = 6600589.00f;
 
-        public BoatScenario(string csvScenarioPath, GameObject instantiatedBoatPrefab, int boatNumber)
+        public BoatScenario(string csvScenarioPath, GameObject instantiatedBoatPrefab, int boatNumber, bool useLLH)
         {
             _scenarioPath = csvScenarioPath;
             _boatNumber = boatNumber;
             _boatObject = instantiatedBoatPrefab;
+            _useLLH = useLLH;
 
 
             heading = vesselCSVHeadings();
@@ -58,7 +64,12 @@ namespace Gemini.EMRS.ScenarioGenerator
             Vector3[] positions = new Vector3[xPos.Length];
             for(int i = 0; i < positions.Length; i++)
             {
-                positions[i] = new Vector3(yPos[i], 0, xPos[i]);
+                if (_useLLH)
+                {
+                    xPos[i] = (xPos[i] - latitudeOffset) / (float)(Math.Atan2(1, R_M * Math.PI / 180f)); ;
+                    yPos[i] = (yPos[i] - longitudeOffset) / (float)(Math.Atan2(1, R_N * Math.PI / 180f * Math.Cos(latitudeOffset * Math.PI / 180f))); ; ;
+                }
+                    positions[i] = new Vector3(yPos[i], 0, xPos[i]);
             }
             return positions;
         }

@@ -7,7 +7,8 @@ namespace Gemini.EMRS.ScenarioGenerator {
     public class ScenarioServer : MonoBehaviour
     {
         public GameObject[] BoatPrefabs;
-        [Range(3, 9)] public int ScenarioNumber;
+        public bool useLLH;
+        [Range(2, 9)] public int ScenarioNumber;
         private BoatScenario[] _boatScenarios;
         private Sensor[] _sensors;
         private double nextScenarioTime;
@@ -46,9 +47,9 @@ namespace Gemini.EMRS.ScenarioGenerator {
             for (int boatIndex = 0; boatIndex < _boatScenarios.Length-1; boatIndex++)
             {
                 BoatPrefabs[boatIndex] = Instantiate(BoatPrefabs[boatIndex], new Vector3(0, 0, 0), Quaternion.identity);
-                _boatScenarios[boatIndex] = new BoatScenario(filePath, BoatPrefabs[boatIndex], boatIndex + 1);
+                _boatScenarios[boatIndex] = new BoatScenario(filePath, BoatPrefabs[boatIndex], boatIndex + 1, useLLH);
             }
-            _boatScenarios[_boatScenarios.Length-1] = new BoatScenario(filePath, BoatPrefabs[_boatScenarios.Length-1], _boatScenarios.Length);
+            _boatScenarios[_boatScenarios.Length-1] = new BoatScenario(filePath, BoatPrefabs[_boatScenarios.Length-1], _boatScenarios.Length, useLLH);
         }
     }
 }
