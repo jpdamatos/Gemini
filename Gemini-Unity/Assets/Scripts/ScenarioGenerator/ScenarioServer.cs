@@ -13,6 +13,9 @@ namespace Gemini.EMRS.ScenarioGenerator {
         private Sensor[] _sensors;
         private double nextScenarioTime;
 
+        private float BoatLength;
+        private string BoatType;
+
         void Start()
         {
             _sensors = Sensor.GetActiveSensors();
@@ -35,14 +38,21 @@ namespace Gemini.EMRS.ScenarioGenerator {
 
         private void SetupBoats()
         {
-            #if UNITY_EDITOR
+#if UNITY_EDITOR
                 string filePath = Application.dataPath + "../../../Scenarios/Scenario" + ScenarioNumber.ToString() + ".csv";
 
             // TODO: This path is not entirely correct for a standalone build, since the scenarios are not packaged
             // together with the rest of the build resource files when built.
-            #else
-                string filePath = Application.dataPath + "..\\..\\..\\..\\Scenarios\\Scenario" + ScenarioNumber.ToString() + ".csv";
-            #endif
+#else
+            string filePath = Application.dataPath + "..\\..\\..\\..\\Scenarios\\Scenario" + ScenarioNumber.ToString() + ".csv";
+#endif
+
+            BoatLength = 7;
+            BoatType = "Finn";
+
+            BoatPrefabs[0] = Instantiate(Resources.Load(BoatType, typeof(GameObject))) as GameObject;
+            float length = BoatPrefabs[0].GetComponentInChildren<MeshFilter>().sharedMesh.bounds.extents.z * 100f;
+            BoatPrefabs[0].transform.localScale *= (BoatLength / (length));
             _boatScenarios = new BoatScenario[BoatPrefabs.Length];
             for (int boatIndex = 0; boatIndex < _boatScenarios.Length-1; boatIndex++)
             {
