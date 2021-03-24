@@ -13,17 +13,19 @@ namespace Gemini.EMRS.ScenarioGenerator
         private int _boatNumber;
         private string _scenarioPath;
         private bool _useLLH;
+        private bool _useRads;
         private const float latitudeOffset = 63.435166667f;
         private const float longitudeOffset = 10.3929167f;
         private const float R_N = 6397309.16f;
         private const float R_M = 6600589.00f;
 
-        public BoatScenario(string csvScenarioPath, GameObject instantiatedBoatPrefab, int boatNumber, bool useLLH)
+        public BoatScenario(string csvScenarioPath, GameObject instantiatedBoatPrefab, int boatNumber, bool useLLH, bool useRads)
         {
             _scenarioPath = csvScenarioPath;
             _boatNumber = boatNumber;
             _boatObject = instantiatedBoatPrefab;
             _useLLH = useLLH;
+            _useRads = useRads;
 
 
             heading = vesselCSVHeadings();
@@ -35,7 +37,15 @@ namespace Gemini.EMRS.ScenarioGenerator
         public double UpdateVessel()
         {
             _boatObject.transform.position = position[ScenarioIndex];
-            Quaternion QuaternionRot = Quaternion.AngleAxis(heading[ScenarioIndex], new Vector3(0, 1, 0));
+            Quaternion QuaternionRot;
+            if (_useRads)
+            {
+                QuaternionRot = Quaternion.AngleAxis(heading[ScenarioIndex] / (float)Math.PI * 180f, new Vector3(0, 1, 0));
+            }
+            else
+            {
+                QuaternionRot = Quaternion.AngleAxis(heading[ScenarioIndex], new Vector3(0, 1, 0));
+            }
             _boatObject.transform.rotation = QuaternionRot;
 
             // Incrementing or repeating the scenario
