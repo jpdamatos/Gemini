@@ -6,7 +6,7 @@ namespace Gemini.Networking.Services
 {
     public class ForceControlManager : MonoBehaviour
     {
-        public string host = "192.168.0.93";
+        public string host = "192.168.146.128";
         private int _port = 12347;
 
         public int Port

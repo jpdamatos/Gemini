@@ -22,6 +22,9 @@ namespace Gemini.Networking.Services
 
         public GameObject[] boatPrefabs;
 
+        public bool useLatitudeLongitude;
+
+        public bool useRadians;
 
         private Server server;
         private SimulationServiceImpl serviceImpl;
@@ -51,7 +54,7 @@ namespace Gemini.Networking.Services
                 _boats[prefabIdx] = Instantiate(boatPrefabs[prefabIdx], new Vector3(0, 0, 0), Quaternion.identity);
             }
 
-            serviceImpl = new SimulationServiceImpl(this, _boats);
+            serviceImpl = new SimulationServiceImpl(this, _boats, useLatitudeLongitude, useRadians);
 
             server = new Server
             {

@@ -6,6 +6,7 @@ using Grpc.Core;
 using System.Threading.Tasks;
 using Gemini.Core;
 using System.Threading;
+using System;
 
 namespace Gemini.Networking.Services
 {
@@ -17,6 +18,10 @@ namespace Gemini.Networking.Services
         private Vector3 _force = new Vector3();
         private Vector3 _torque = new Vector3();
 
+        private float surge_Gain = 10f;
+        private float sway_Gain = 1.5f;
+        private float yaw_Gain = 1/5000f; 
+
         public ForceControlServiceImpl(ForceController[] forceControllers)
         {
             this._forceControllers = forceControllers; 
@@ -24,14 +29,15 @@ namespace Gemini.Networking.Services
 
         public override async Task<ForceResponse> ApplyForce(ForceRequest request, ServerCallContext context)
         {
-            
-            _force.x = request.GeneralizedForce.X;
-            _force.y = request.GeneralizedForce.Y;
-            _force.z = request.GeneralizedForce.Z;
 
-            _torque.x = request.GeneralizedForce.K;
-            _torque.y = request.GeneralizedForce.M;
-            _torque.z = request.GeneralizedForce.N;
+            _force.x = Mathf.Clamp(request.GeneralizedForce.X,-100f,100f) * surge_Gain;
+            _force.y = Mathf.Clamp(request.GeneralizedForce.Y, -100f, 100f) * sway_Gain;
+            _force.z = 0; //request.GeneralizedForce.Z;
+
+            _torque.x = 0; //request.GeneralizedForce.K;
+            _torque.y = 0; //request.GeneralizedForce.M;
+            _torque.z = Mathf.Clamp(request.GeneralizedForce.N, -100f, 100f) * yaw_Gain;
+
 
             // Create the event that triggers when the execution of the action is finished.
             ManualResetEvent signalEvent = new ManualResetEvent(false);

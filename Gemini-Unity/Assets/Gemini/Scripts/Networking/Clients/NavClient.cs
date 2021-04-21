@@ -4,6 +4,7 @@ using UnityEngine.Rendering;
 using Navigation;
 using Gemini.Core;
 using Grpc.Core;
+using System;
 
 
 public class NavClient : Sensor
@@ -20,6 +21,11 @@ public class NavClient : Sensor
     private UnityEngine.Quaternion _unityOrientation;
     private Vector3 _unityLinearVelocity;
     private Vector3 _unityAngularVelocity;
+
+    private const float latOffset = 63.435166667f;
+    private const float lonOffset = 10.3929167f;
+    private const float R_N = 6397309.16f;
+    private const float R_M = 6600589.00f;
 
     private Rigidbody _rigidBody;
 
@@ -47,12 +53,21 @@ public class NavClient : Sensor
         _unityPosition = ConventionTransforms.PositionUnityToNED(gameObject.transform.position);
 
         _unityOrientation = UnityEngine.Quaternion.Euler(ConventionTransforms.EulerOrientationUnityToNED(gameObject.transform.rotation.eulerAngles));
-            
+
         // Set Navigation Position and orientation to the same value as the Unity position and orientation
         // TODO: This should be done in a own function
-        _navPosition.X = _unityPosition.x;
-        _navPosition.Y = _unityPosition.y;
-        _navPosition.Z = _unityPosition.z;
+
+        // Publishes local coordinates
+        //_navPosition.X = _unityPosition.x;
+        //_navPosition.Y = _unityPosition.y;
+        //_navPosition.Z = _unityPosition.z;
+
+
+
+        // Publishes latitude and longitude
+        _navPosition.X = _unityPosition.x * (float)Math.Atan2(1, R_M * Math.PI / 180f) + latOffset; // Latitude
+        _navPosition.Y = _unityPosition.y * (float)Math.Atan2(1, R_N * Math.PI / 180f * Math.Cos(latOffset * Math.PI / 180f)) + lonOffset; // Longitude
+        _navPosition.Z = gameObject.transform.rotation.eulerAngles.y; // Heading
 
         _navOrientation.X = _unityOrientation.x;
         _navOrientation.Y = _unityOrientation.y;
