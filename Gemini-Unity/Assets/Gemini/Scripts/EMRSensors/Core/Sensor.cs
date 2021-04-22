@@ -14,21 +14,8 @@ namespace Gemini.EMRS.Core
 
         //public bool RunRecording = false;
 
-<<<<<<< HEAD:Gemini-Unity/Assets/Scripts/EMRSensors/Core/Sensor.cs
-        // Change this to the IP that the server are running on for you
-
-	    // Localhost
-        //public static string serverIP = "127.0.0.1";
-
-        // VM IP
-        public static string serverIP = "192.168.146.128";
-
-        // Docker IP
-        //public static string serverIP = "0.0.0.0";
-=======
         // Change this to the IP that your server is running on (Virtual Machine)
         public static string serverIP = "192.168.146.128";
->>>>>>> GeminiMaster:Gemini-Unity/Assets/Gemini/Scripts/EMRSensors/Core/Sensor.cs
 
         public static int serverPort = 30052;
         protected static Channel _streamingChannel = new Channel(serverIP + ":" + serverPort, ChannelCredentials.Insecure);
