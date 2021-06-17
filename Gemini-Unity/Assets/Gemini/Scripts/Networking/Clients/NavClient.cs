@@ -58,15 +58,15 @@ public class NavClient : Sensor
         // TODO: This should be done in a own function
 
         // Publishes local coordinates
-        //_navPosition.X = _unityPosition.x;
-        //_navPosition.Y = _unityPosition.y;
+        _navPosition.X = _unityPosition.x;
+        _navPosition.Y = _unityPosition.y;
         //_navPosition.Z = _unityPosition.z;
 
 
 
         // Publishes latitude and longitude
-        _navPosition.X = _unityPosition.x * (float)Math.Atan2(1, R_M * Math.PI / 180f) + latOffset; // Latitude
-        _navPosition.Y = _unityPosition.y * (float)Math.Atan2(1, R_N * Math.PI / 180f * Math.Cos(latOffset * Math.PI / 180f)) + lonOffset; // Longitude
+        //_navPosition.X = _unityPosition.x * (float)Math.Atan2(1, R_M * Math.PI / 180f) + latOffset; // Latitude
+        //_navPosition.Y = _unityPosition.y * (float)Math.Atan2(1, R_N * Math.PI / 180f * Math.Cos(latOffset * Math.PI / 180f)) + lonOffset; // Longitude
         _navPosition.Z = gameObject.transform.rotation.eulerAngles.y; // Heading
 
         _navOrientation.X = _unityOrientation.x;
