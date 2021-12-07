@@ -15,7 +15,7 @@ namespace Gemini.EMRS.Core
         //public bool RunRecording = false;
 
         // Change this to the IP that your server is running on (Virtual Machine)
-        public static string serverIP = "192.168.146.128";
+        public static string serverIP = "192.168.25.128";
 
         public static int serverPort = 30052;
         protected static Channel _streamingChannel = new Channel(serverIP + ":" + serverPort, ChannelCredentials.Insecure);
